@@ -3,8 +3,28 @@ const section = document.querySelector("section");
 let playerLivesCount = document.querySelector("span");
 let countdownEl = document.getElementById("countdown");
 let playerLives = 8;
-const startingMinutes = 1;
+const startingMinutes = 0.5;
 let time = startingMinutes * 60;
+
+// generate the data
+const getData = () => [
+  { imgSrc: "./images/heisenberg.jpg", name: "heisenberg" },
+  { imgSrc: "./images/jesse.jpg", name: "jesse pinkman" },
+  { imgSrc: "./images/gus.jpg", name: "gus firing" },
+  { imgSrc: "./images/saul.jpg", name: "saul goodman" },
+  { imgSrc: "./images/mike.jpg", name: "michael ehrmantraut" },
+  { imgSrc: "./images/hector.jpg", name: "hector salamanca" },
+  { imgSrc: "./images/jane.jpg", name: "jane margolis" },
+  { imgSrc: "./images/lalo.jpg", name: "lalo salamanca" },
+  { imgSrc: "./images/heisenberg.jpg", name: "heisenberg" },
+  { imgSrc: "./images/jesse.jpg", name: "jesse pinkman" },
+  { imgSrc: "./images/gus.jpg", name: "gus firing" },
+  { imgSrc: "./images/saul.jpg", name: "saul goodman" },
+  { imgSrc: "./images/mike.jpg", name: "michael ehrmantraut" },
+  { imgSrc: "./images/hector.jpg", name: "hector salamanca" },
+  { imgSrc: "./images/jane.jpg", name: "jane margolis" },
+  { imgSrc: "./images/lalo.jpg", name: "lalo salamanca" },
+];
 
 //countDown
 function updateCountdown() {
@@ -13,8 +33,12 @@ function updateCountdown() {
   seconds = seconds < 10 ? "0" + seconds : seconds;
   countdownEl.innerHTML = ` ${minutes}:${seconds}`;
   time--;
+
+  if (time == 0 && seconds == "01") {
+    lostTheGame();
+  }
 }
-function startCountdown(){
+function startCountdown() {
   callCountdown = setInterval(updateCountdown, 1000);
 }
 //link text
@@ -51,29 +75,21 @@ startBtn.addEventListener("click", () => {
   startCountdown();
   firstModal.classList.remove("flex");
   firstModal.classList.add("hidden");
-   
-  
+  revealAllCards();
 });
 
-// generate the data
-const getData = () => [
-  { imgSrc: "./images/heisenberg.jpg", name: "heisenberg" },
-  { imgSrc: "./images/jesse.jpg", name: "jesse pinkman" },
-  { imgSrc: "./images/gus.jpg", name: "gus firing" },
-  { imgSrc: "./images/saul.jpg", name: "saul goodman" },
-  { imgSrc: "./images/mike.jpg", name: "michael ehrmantraut" },
-  { imgSrc: "./images/hector.jpg", name: "hector salamanca" },
-  { imgSrc: "./images/jane.jpg", name: "jane margolis" },
-  { imgSrc: "./images/lalo.jpg", name: "lalo salamanca" },
-  { imgSrc: "./images/heisenberg.jpg", name: "heisenberg" },
-  { imgSrc: "./images/jesse.jpg", name: "jesse pinkman" },
-  { imgSrc: "./images/gus.jpg", name: "gus firing" },
-  { imgSrc: "./images/saul.jpg", name: "saul goodman" },
-  { imgSrc: "./images/mike.jpg", name: "michael ehrmantraut" },
-  { imgSrc: "./images/hector.jpg", name: "hector salamanca" },
-  { imgSrc: "./images/jane.jpg", name: "jane margolis" },
-  { imgSrc: "./images/lalo.jpg", name: "lalo salamanca" },
-];
+const revealAllCards = () => {
+  const allCards = document.querySelectorAll(".card");
+  allCards.forEach((card) => {
+    card.classList.add("toggleCard"); // Show the card
+  });
+
+  setTimeout(() => {
+    allCards.forEach((card) => {
+      card.classList.remove("toggleCard"); // Hide the card
+    });
+  }, 2000); 
+};
 
 //Randomize
 const randomize = () => {
@@ -81,6 +97,7 @@ const randomize = () => {
   cardData.sort(() => Math.random() - 0.5);
   return cardData;
 };
+
 
 // Card generator Func
 const cardGenerator = () => {
@@ -108,6 +125,8 @@ const cardGenerator = () => {
     });
   });
 };
+// show the cards
+
 
 //check card
 const checkCards = (e) => {
@@ -137,7 +156,7 @@ const checkCards = (e) => {
 
       playerLives--;
       playerLivesCount.textContent = playerLives;
-      if (playerLives === 0 || (minutes && seconds === 0) ) {
+      if (playerLives === 0 || (minutes && seconds === 0)) {
         lostTheGame();
       }
     }
